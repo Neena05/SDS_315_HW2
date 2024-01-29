@@ -9,7 +9,7 @@ Name: Neena Varanasi
 
 EID: nv6558
 
-GitHub Link:
+[GitHub Link](https://github.com/Neena05/SDS_315_HW2.git)
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -45,7 +45,7 @@ ggplot(profs, aes(x=native, y=eval)) +
   ggtitle("Distribution of Course Evaluation Scores based on Native English Speakers")
 
 ```
-The above side-by-side boxplot shows the distribution of course evaluation scores by whether or not the professor is a native English speaker. The takeaway from the graph is that the median for course evaluation scores for non-native english speakers is lower than that of native english speakers.
+The above side-by-side boxplot shows the distribution of course evaluation scores by whether or not the professor is a native English speaker. The takeaway from the graph is that the median for course evaluation scores for non-native English speakers is lower than that of native English speakers. A possible explanation for a lower course evaluation score could be that professors who are not native English speakers may have accents, affecting the  effective communication of course material.
 
 
 ```{r, echo=FALSE, message = FALSE}
@@ -69,7 +69,7 @@ ggplot(profs, aes(x=beauty, y=eval)) +
   
 ```
 
-The scatter plot shows the relationship between a professor's physical attractiveness, where the mean is zero, and his/her course evaluation score. There is little correlation between the two variables as shown by the correlation coefficient of `r round(cor(profs$beauty, profs$eval),2)`.
+The scatter plot shows the relationship between a professor's physical attractiveness, where the mean is zero, and his/her course evaluation score on a scale of 1-5. There is little correlation between the two variables as shown by the correlation coefficient of `r round(cor(profs$beauty, profs$eval),2)`.
 
 
 ## Problem 2: Bike Sharing
@@ -87,7 +87,7 @@ ggplot(rentals_by_hour) +
   ylab("Average Number of Bike Rentals") +
   ggtitle("Average Bike Rentals Across Hours of the Day")
 ```
-The above line graph shows the average number of bike rentals across hours of the day, which are recorded in military time. The x-axis represents the hour and the y-axis represents the average number of bike rentals. The graph shows a spike in rentals at 8am and 4pm, and the minimum number of rentals is at 4am.
+The above line graph shows the average number of bike rentals across hours of the day, which are recorded in military time. The x-axis represents the hour and the y-axis represents the average number of bike rentals. The graph shows a spike in rentals at 8am as well as the minimum number of rentals, which is at 4am.
 
 ```{r, echo=FALSE, message = FALSE}
 #Plot B
@@ -102,25 +102,31 @@ ggplot(rentals_by_work_hour) +
   ylab("Average Bike Rentals") +
   ggtitle("Average Bike Rentals Across Hours of the Day by Working Day")
 ```
-The faceted line graph shows average bike rentals on the y-axis by hour of the day on the x-axis, faceted according to whether it is a working day. For the facet labels, a 0 represents a weekend or holiday and a 1 represents a working day. There are overall more average bike rentals on a working day, with spikes at 8am and 4pm, while the weekends/holiday have a graudal increase and decline in rentals.
+The faceted line graph shows average bike rentals on the y-axis by hour of the day on the x-axis, faceted according to whether it is a working day. For the facet labels, a 0 represents a weekend or holiday and a 1 represents a working day. There are overall more average bike rentals on a working day, with spikes at 8am and 4pm, while the weekends/holiday have a gradual increase and decline in rentals. A possible explanation for this takeaway is the that people need to commute to and from work on workingdays. On  the other hand, people are not constrained to specific hours on weekends/holidays, explaining the gradual increases and decreases. 
 
 ```{r, echo=FALSE, message = FALSE}
 #Plot C
 rentals_at_9 <- bike %>%
-  filter(hr == 9) 
+  filter(hr == 9) %>% 
+  group_by(weathersit, workingday) %>% 
+  summarize(average_rentals = mean(total))
 
 ggplot(rentals_at_9) +  
-  geom_col(aes(x=weathersit, y=total), fill = "firebrick4") +
+  geom_col(aes(x=weathersit, y=average_rentals), fill = "firebrick4") +
   facet_wrap(~workingday, labeller = label_both) +
   xlab("Weather Situation") +
   ylab("Average Bike Ridership") +
   ggtitle("Relationship between Bike Rentals and Weather by by Working Day")
 
 ```
-The bar chart shows the average bike ridership by weather at 9am on working days and weekends/holidays. The weather situation, which is shown on the x-axis has three possibilities: 
-* 1: Clear, Few clouds, Partly cloudy, Partly cloudy, 
-* 2: Mist + Cloudy, Mist + Broken clouds, Mist + Few clouds, Mist
-* 3: Light Snow, Light Rain + Thunderstorm + Scattered clouds, Light Rain + Scattered clouds
+The bar chart shows the average bike ridership by weather at 9am on working days and weekends/holidays. The weather situation, which is shown on the x-axis has three possibilities:
+
++ 1: Clear, Few clouds, Partly cloudy, Partly cloudy, 
+
++ 2: Mist + Cloudy, Mist + Broken clouds, Mist + Few clouds, Mist
+
++ 3: Light Snow, Light Rain + Thunderstorm + Scattered clouds, Light Rain + Scattered clouds
+
 The graph shows that ridership was highest when the weather was generally clear and was the lowest when there was somewhat hostile weather on both weekends and weekdays.
 
 ## Probelm 3- Capital Metro UT Ridership
@@ -145,11 +151,6 @@ ggplot(average_boardings) +
   ylab("Number of Boardings") +
   ggtitle("Relationship between Number of Boardings and Hour by Day of the Week")
 
-# Decide if i want to integrate!!
-peak_values <- average_boardings %>% 
-  group_by(month, day_of_week) %>% 
-  filter(boarding == max(boarding)) 
-
 ```
 The above graph shows the average number of people boarding on Austin's CapMetro bus by hour of the day (6AM - 10PM), day of week (Monday- Sunday), and month (September- November). The graph is faceted by day of the week and different lines denote various months according to the legend on the right.
 
@@ -168,8 +169,9 @@ ggplot(cap_metro, aes(x=temperature, y=boarding, color = weekend, shape = weeken
   ylab("Number of Boardings") + 
   ggtitle("Temperature vs. Number of Boardings by Hour")
 ```
-The above scatter plot shows the relationship between the temperature, in Fahrenheit, and the number of boardings on CapMetro buses according to the hour of the day. Ridership on weekdays and weekends are also differentiated by color of point. When holding the hour of the day and weekend status constant, the temperature does not seem to have a noticeable effect on the number of UT students riding the bus, specifically in the months of data collection from September to November. This consistency is evident in the relatively straight horizontal line made by the points in each of the scatter plots.
+The above scatter plot shows the relationship between the temperature, in Fahrenheit, and the number of boardings on CapMetro buses according to the hour of the day. Ridership on weekdays and weekends are also differentiated by color of point. When holding the hour of the day and weekend status constant, the temperature does not seem to have a noticeable effect on the number of UT students riding the bus, specifically in the months of data collection from September to November. This consistency is evident in the relatively straight horizontal line made by the points in each of the scatter plots. A possible explanation for this takeaway is that the temperature from september- November is more pleasure than those of summer of winter months where the weather makes it undesirable to walk.
 
+\newpage
 
 ## Problem 4- Wrangling the Billboard Top 100
 ```{r, echo=FALSE, message =FALSE}
@@ -179,14 +181,16 @@ billboard <- read_csv("billboard.csv")
 
 billboard %>%
   group_by(song, performer) %>%
-  summarise(count = sum(weeks_on_chart)) %>%
-  arrange(desc(count)) %>%
+  count(name = "weeks_on_chart") %>%
+  arrange(desc(weeks_on_chart)) %>%
   head(10) %>%
   kbl(col.names = c("Song Name","Performer", "Count"), booktabs = TRUE) %>%
-  kable_styling()
+  kable_styling(latex_options = c("hold_position"))
 ```
 
-The above table shows the Top 10 songs on the Billboard Top 100 since 1958, where the count column is the amount of weeks the song spent on the chart. The table is in descending order, meaning Radioacitve by Imagine Dragons is the song that spent the most weeks on the Billboard Hot 100.
+The above table shows the Top 10 songs on the Billboard Top 100 since 1958, where the count column is the amount of weeks the song spent on the chart. The table is in descending order, meaning Radioactive by Imagine Dragons is the song that spent the most weeks on the Billboard Hot 100.
+
+\newpage
 
 ```{r, echo=FALSE, message =FALSE}
 #Plot B
@@ -201,7 +205,7 @@ ggplot(diversity) +
   ylab("Number of Unique Songs") +
   ggtitle("Number of Unique Songs Across Years")
 ```
-The above line graph shows the musical diversity of given year by displaying the year on the x-axis (1959-2020) and the number of unique songs that appeared in the Billboard Top 100 that year on the y-axis. An interesting trend in the graph is that from the 1970s to the early 2000s, the musical diversity was consistently decreasing. Another increasing trend is the sharp increase of musical diversity in 2020.
+The above line graph shows the musical diversity of given year by displaying the year on the x-axis (1959-2020) and the number of unique songs that appeared in the Billboard Top 100 that year on the y-axis. An interesting trend in the graph is that from the 1970s to the early 2000s, the musical diversity was consistently decreasing. Another increasing trend is the sharp increase of musical diversity in 2020. A possible explanation for this takeaway is the rise of social media, as it is easier to share diverse music.
 
 ```{r, echo=FALSE, message =FALSE}
 #Plot C
